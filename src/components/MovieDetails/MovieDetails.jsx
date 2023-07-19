@@ -8,15 +8,18 @@ export const MovieDetails = () => {
   const [movieData, setMovieData] = useState({});
   const { movieId } = useParams();
   const getDetails = useCallback(async () => {
-    const { data } = await axios.request(optionsGetDetails(movieId));
-    setMovieData(data);
+    try {
+      const { data } = await axios.request(optionsGetDetails(movieId));
+      setMovieData(data);
+    } catch (error) {
+      console.log(error.message);
+    }
   }, [movieId]);
 
   useEffect(() => {
     getDetails();
   }, [getDetails]);
 
-  console.log(movieId, movieData);
   const {
     poster_path,
     original_title,
@@ -25,23 +28,27 @@ export const MovieDetails = () => {
     overview,
     genres,
   } = movieData;
-  console.log(genres);
+
+  const date = new Date(release_date);
+  const release_year = date?.getFullYear();
+
+  const vote = Math.round(vote_average * 10);
+  const poster = poster_path
+    ? `https://image.tmdb.org/t/p/original/${poster_path}`
+    : '';
+
   return (
     <div>
       <div className="container-details">
         <div>
-          <img
-            src={`https://image.tmdb.org/t/p/original/${poster_path}`}
-            width={350}
-            alt={original_title}
-          />
+          <img loading="lazy" src={poster} width={350} alt={original_title} />
         </div>
         <div>
           <h1>
             {original_title}
-            <span>({release_date})</span>
+            <span>({release_year})</span>
           </h1>
-          <p>User score: {vote_average}</p>
+          <p>User score: {vote}%</p>
           <h2>Overview</h2>
           <p>{overview}</p>
           <Genres genres={genres} />

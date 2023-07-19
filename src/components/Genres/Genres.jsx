@@ -3,7 +3,7 @@ export const Genres = ({ genres }) => {
     <>
       <h2>Genres</h2>
       {genres &&
-        genres.map(genres => <span key={genres.id}>{genres.name}</span>)}
+        genres.map(genres => <span key={genres.id}>{genres.name} </span>)}
     </>
   );
 };

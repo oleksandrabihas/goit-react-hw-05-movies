@@ -24,3 +24,24 @@ export const optionsGetDetails = movie_id => {
   };
 };
 
+export const optionsCast = movieId => {
+  return {
+    method: 'GET',
+    url: `${BASE_URL}/movie/${movieId}/credits`,
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${ACCESS_KEY}`,
+    },
+  };
+};
+
+export const optionsReviews = movieId => {
+  return {
+    method: 'GET',
+    url: `${BASE_URL}/movie/${movieId}/reviews`,
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${ACCESS_KEY}`,
+    },
+  };
+};
