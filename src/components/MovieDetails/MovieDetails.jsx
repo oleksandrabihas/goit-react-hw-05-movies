@@ -1,12 +1,17 @@
 import { optionsGetDetails } from 'api/movies';
 import axios from 'axios';
 import { Genres } from 'components/Genres/Genres';
-import { useCallback, useEffect, useState } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 
 export const MovieDetails = () => {
   const [movieData, setMovieData] = useState({});
   const { movieId } = useParams();
+  const location = useLocation();
+
+  const BackToPrevPage = useRef(location.state?.from ?? "/")
+  console.log(BackToPrevPage.current, location.state?.from);
+
   const getDetails = useCallback(async () => {
     try {
       const { data } = await axios.request(optionsGetDetails(movieId));
@@ -33,12 +38,17 @@ export const MovieDetails = () => {
   const release_year = date?.getFullYear();
 
   const vote = Math.round(vote_average * 10);
+  const defaultImg =
+    'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
+  
   const poster = poster_path
     ? `https://image.tmdb.org/t/p/original/${poster_path}`
-    : '';
+    : defaultImg;
+
 
   return (
-    <div>
+    <>
+      <Link to={BackToPrevPage.current}>Go back</Link>
       <div className="container-details">
         <div>
           <img loading="lazy" src={poster} width={350} alt={original_title} />
@@ -58,6 +68,6 @@ export const MovieDetails = () => {
       <Link to="cast">Cast</Link>
       <Link to="reviews">Reviews</Link>
       <Outlet />
-    </div>
+    </>
   );
 };

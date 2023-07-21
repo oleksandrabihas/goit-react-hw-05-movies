@@ -1,12 +1,27 @@
-import { TrendingList } from "components/TrendingList/TrendingList"
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { MoviesItem } from 'components/MoviesItem/MoviesItem';
+import { optionsGetTrending } from 'api/movies';
 
 export const HomePage = () => {
+  const [trendingMovies, setTrendingMovies] = useState([]);
 
-    return (
-        <>
-            <h2>Trending today</h2>
-            <TrendingList/>
-            
-        </>
-    )
-}
+    useEffect(() => {
+      (async () => {
+        try {
+          const { data } = await axios.request(optionsGetTrending);
+          setTrendingMovies(data.results);
+        } catch (error) {
+          console.log(error);
+        }
+      })()
+  }, []);
+
+  return (
+    <>
+      <ul>
+        <MoviesItem Movies={trendingMovies} />
+      </ul>
+    </>
+  );
+};

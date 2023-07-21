@@ -45,3 +45,16 @@ export const optionsReviews = movieId => {
     },
   };
 };
+
+export const optionsSearch = (query) => {
+  return {
+    method: 'GET',
+    url: 'https://api.themoviedb.org/3/search/movie',
+    params: { query },
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${ACCESS_KEY}`,
+    },
+  };
+
+};
