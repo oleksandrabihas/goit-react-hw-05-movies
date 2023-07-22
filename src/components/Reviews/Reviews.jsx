@@ -2,6 +2,7 @@ import { optionsReviews } from 'api/movies';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Review } from './Reviews.styled';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -28,10 +29,10 @@ const Reviews = () => {
       {reviews.map(review => {
         const { id, author, content } = review;
         return (
-          <li key={id}>
+          <Review key={id}>
             <h3>Author: {author}</h3>
             <p>{content}</p>
-          </li>
+          </Review>
         );
       })}
     </ul>

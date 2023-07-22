@@ -5,13 +5,15 @@ import { Container } from './Layout.styled';
 
 export const Layout = () => {
   return (
-    <Container>
+    <>
       <Header />
       <main>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Outlet />
-        </Suspense>
+        <Container>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Outlet />
+          </Suspense>
+        </Container>
       </main>
-    </Container>
+    </>
   );
 };

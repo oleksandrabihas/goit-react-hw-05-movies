@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Genres } from 'components/Genres/Genres';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
+import { LinkGoBack, MovieAdditionalInfo, MovieInfo, PosterContainer, SectionContainer, StyledLink } from './MovieDetails.styled';
 
 export const MovieDetails = () => {
   const [movieData, setMovieData] = useState({});
@@ -17,7 +18,7 @@ export const MovieDetails = () => {
       setMovieData(data);
     } catch (error) {
       console.log(error.message);
-    } 
+    }
   }, [movieId]);
 
   useEffect(() => {
@@ -44,34 +45,34 @@ export const MovieDetails = () => {
     ? `https://image.tmdb.org/t/p/original/${poster_path}`
     : defaultImg;
 
-if (!Object.keys(movieData).length) {
-  return <div>Loading...</div>;
-}
+  if (!Object.keys(movieData).length) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div>
-      <Link to={BackToPrevPage.current}>Go back</Link>
-      <div className="container-details">
-        <div>
-          <img loading="lazy" src={poster} width={350} alt={original_title} />
-        </div>
-        <div>
-          <h1>
+    <>
+      <LinkGoBack to={BackToPrevPage.current}>Go back</LinkGoBack>
+      <SectionContainer>
+        <PosterContainer>
+          <img loading="lazy" src={poster} width={280} alt={original_title} />
+        </PosterContainer>
+        <MovieInfo>
+          <h2>
             {original_title}
             <span>({release_year})</span>
-          </h1>
+          </h2>
           <p>User score: {vote}%</p>
           <h2>Overview</h2>
           <p>{overview}</p>
           <Genres genres={genres} />
-        </div>
-      </div>
-      <h2>Additional information</h2>
-      <Link to="cast">Cast</Link>
-      <Link to="reviews">Reviews</Link>
+        </MovieInfo>
+      </SectionContainer>
+      <MovieAdditionalInfo>Additional information</MovieAdditionalInfo>
+      <StyledLink to="cast">Cast</StyledLink>
+      <StyledLink to="reviews">Reviews</StyledLink>
       <Suspense fallback={<div>Loading...</div>}>
         <Outlet />
       </Suspense>
-    </div>
+    </>
   );
 };

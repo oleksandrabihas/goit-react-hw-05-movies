@@ -40,7 +40,9 @@ const MoviesPage = () => {
   return (
     <>
       <FormSearchMovies handleSubmit={handleSubmit} />
-      <MoviesItem Movies={searchedMovies} />
+      <ul>
+        <MoviesItem Movies={searchedMovies} />
+      </ul>
       {notFound && (
         <div>
           Sorry, we couldn't find any movie. <br />

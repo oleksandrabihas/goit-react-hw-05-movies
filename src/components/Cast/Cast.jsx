@@ -2,6 +2,7 @@ import { optionsCast } from 'api/movies';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { ActorItem, ActorName, ActorPoster, CastList, Character, ImageThumb } from './Cast.styled';
 
 const Cast = () => {
   const [cast, setCast] = useState([]);
@@ -22,22 +23,29 @@ const Cast = () => {
     getCast();
   }, [getCast]);
 
+   const defaultImg =
+     'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
+  
   return (
-    <ul>
+    <CastList>
       {cast.map(actor => {
         const { id, name, character, profile_path } = actor;
         const actor_poster = profile_path
           ? `https://image.tmdb.org/t/p/original/${profile_path}`
-          : '';
+          : defaultImg;
         return (
           <li key={id}>
-            <img width="80" src={actor_poster} alt={name} />
-            <p>{name}</p>
-            <p>Character: {character}</p>
+            <ImageThumb>
+              <ActorPoster width="120" src={actor_poster} alt={name} />
+            </ImageThumb>
+            <ActorName>{name}</ActorName>
+            <Character>
+              Character: <span>{character}</span>
+            </Character>
           </li>
         );
       })}
-    </ul>
+    </CastList>
   );
 };
 export default Cast;
