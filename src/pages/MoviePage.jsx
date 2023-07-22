@@ -5,28 +5,50 @@ import { MoviesItem } from 'components/MoviesItem/MoviesItem';
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-export const MoviesPage = () => {
-  const [searchedMovies, setSearchedMovies] = useState([]);
+const MoviesPage = () => {
+  const [searchedMovies, setSearchedMovies] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query');
+  const [notFound, setNotFound] = useState(false);
 
   const getMovieBySearch = useCallback(async () => {
-    const { data } = await axios.request(optionsSearch(query));
-    setSearchedMovies(data.results);
+    setNotFound(false);
+
+    try {
+      const { data } = await axios.request(optionsSearch(query));
+      setSearchedMovies(data.results);
+      if (data.results.length === 0) {
+        setNotFound(true);
+      }
+    } catch (error) {
+      setSearchedMovies(null);
+    }
   }, [query]);
-  
+
   useEffect(() => {
+    if (!query) {
+      return;
+    }
     getMovieBySearch();
-  }, [getMovieBySearch]);
+  }, [getMovieBySearch, query]);
 
   const handleSubmit = query => {
     const nextQuery = query !== '' ? { query } : {};
     setSearchParams(nextQuery);
   };
+
   return (
     <>
       <FormSearchMovies handleSubmit={handleSubmit} />
       <MoviesItem Movies={searchedMovies} />
+      {notFound && (
+        <div>
+          Sorry, we couldn't find any movie. <br />
+          Please, try again.
+        </div>
+      )}
     </>
   );
 };
+
+export default MoviesPage;

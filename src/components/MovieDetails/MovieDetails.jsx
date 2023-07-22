@@ -1,7 +1,7 @@
 import { optionsGetDetails } from 'api/movies';
 import axios from 'axios';
 import { Genres } from 'components/Genres/Genres';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 
 export const MovieDetails = () => {
@@ -9,8 +9,7 @@ export const MovieDetails = () => {
   const { movieId } = useParams();
   const location = useLocation();
 
-  const BackToPrevPage = useRef(location.state?.from ?? "/")
-  console.log(BackToPrevPage.current, location.state?.from);
+  const BackToPrevPage = useRef(location.state?.from ?? '/');
 
   const getDetails = useCallback(async () => {
     try {
@@ -18,7 +17,7 @@ export const MovieDetails = () => {
       setMovieData(data);
     } catch (error) {
       console.log(error.message);
-    }
+    } 
   }, [movieId]);
 
   useEffect(() => {
@@ -40,14 +39,17 @@ export const MovieDetails = () => {
   const vote = Math.round(vote_average * 10);
   const defaultImg =
     'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
-  
+
   const poster = poster_path
     ? `https://image.tmdb.org/t/p/original/${poster_path}`
     : defaultImg;
 
+if (!Object.keys(movieData).length) {
+  return <div>Loading...</div>;
+}
 
   return (
-    <>
+    <div>
       <Link to={BackToPrevPage.current}>Go back</Link>
       <div className="container-details">
         <div>
@@ -67,7 +69,9 @@ export const MovieDetails = () => {
       <h2>Additional information</h2>
       <Link to="cast">Cast</Link>
       <Link to="reviews">Reviews</Link>
-      <Outlet />
-    </>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
+    </div>
   );
 };

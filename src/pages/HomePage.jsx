@@ -3,7 +3,7 @@ import axios from 'axios';
 import { MoviesItem } from 'components/MoviesItem/MoviesItem';
 import { optionsGetTrending } from 'api/movies';
 
-export const HomePage = () => {
+const HomePage = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
 
     useEffect(() => {
@@ -25,3 +25,4 @@ export const HomePage = () => {
     </>
   );
 };
+export default HomePage;

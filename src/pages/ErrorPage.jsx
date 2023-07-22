@@ -1,3 +1,5 @@
+import { ErrorPageNotFound } from "./ErrorPage.styled";
+
 export const ErrorPage = () => {
-  return <div>404 Not Found</div>;
+  return <ErrorPageNotFound>404 Not Found</ErrorPageNotFound>;
 };

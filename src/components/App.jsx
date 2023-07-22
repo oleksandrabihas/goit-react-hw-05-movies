@@ -1,15 +1,16 @@
-import { ErrorPage } from 'pages/ErrorPage';
-import { HomePage } from 'pages/HomePage';
-import { MoviesPage } from 'pages/MoviePage';
 import { Route, Routes } from 'react-router-dom';
+import { lazy } from 'react';
+
 import { Layout } from './Layout/Layout';
-import { MovieDetails } from './MovieDetails/MovieDetails';
-import { Cast } from './Cast/Cast';
-import { Reviews } from './Reviews/Reviews';
+import { ErrorPage } from 'pages/ErrorPage';
+const HomePage = lazy(() => import('pages/HomePage'));
+const MoviesPage = lazy(() => import('pages/MoviePage'));
+const Cast = lazy(() => import('./Cast/Cast'));
+const Reviews = lazy(()=>import('./Reviews/Reviews'))
+const MovieDetails = lazy(() => import('./MovieDetails/MovieDetails').then(module => ({ ...module, default: module.MovieDetails })));
 
 export const App = () => {
   return (
-    <>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
@@ -22,6 +23,6 @@ export const App = () => {
           <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
-    </>
+
   );
 };

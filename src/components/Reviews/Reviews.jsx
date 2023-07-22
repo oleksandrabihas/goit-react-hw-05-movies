@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-export const Reviews = () => {
+const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const { movieId } = useParams();
   const getReviews = useCallback(async () => {
@@ -37,3 +37,5 @@ export const Reviews = () => {
     </ul>
   );
 };
+
+export default Reviews;

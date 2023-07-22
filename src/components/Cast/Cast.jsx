@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-export const Cast = () => {
+const Cast = () => {
   const [cast, setCast] = useState([]);
   const { movieId } = useParams();
 
@@ -25,8 +25,10 @@ export const Cast = () => {
   return (
     <ul>
       {cast.map(actor => {
-          const { id, name, character, profile_path } = actor;
-          const actor_poster = profile_path ? `https://image.tmdb.org/t/p/original/${profile_path}`: ''
+        const { id, name, character, profile_path } = actor;
+        const actor_poster = profile_path
+          ? `https://image.tmdb.org/t/p/original/${profile_path}`
+          : '';
         return (
           <li key={id}>
             <img width="80" src={actor_poster} alt={name} />
@@ -38,3 +40,4 @@ export const Cast = () => {
     </ul>
   );
 };
+export default Cast;
