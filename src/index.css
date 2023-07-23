@@ -41,3 +41,7 @@ img {
   height: 100%;
   display: block;
 }
+
+.smooth-scroll-button {
+  scroll-behavior: smooth;
+}

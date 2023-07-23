@@ -2,7 +2,8 @@ import { optionsCast } from 'api/movies';
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ActorItem, ActorName, ActorPoster, CastList, Character, ImageThumb } from './Cast.styled';
+import { ActorName, ActorPoster, CastList, Character, ImageThumb } from './Cast.styled';
+import { Loader } from 'components/Loader/Loader';
 
 const Cast = () => {
   const [cast, setCast] = useState([]);
@@ -15,7 +16,7 @@ const Cast = () => {
       } = await axios.request(optionsCast(movieId));
       setCast(cast);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   }, [movieId]);
 
@@ -26,6 +27,9 @@ const Cast = () => {
    const defaultImg =
      'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
   
+      if (!Object.keys(cast).length) {
+        return <Loader />;
+      }
   return (
     <CastList>
       {cast.map(actor => {

@@ -1,9 +1,18 @@
 import { optionsGetDetails } from 'api/movies';
 import axios from 'axios';
+import { animateScroll as scroll } from 'react-scroll';
 import { Genres } from 'components/Genres/Genres';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
-import { LinkGoBack, MovieAdditionalInfo, MovieInfo, PosterContainer, SectionContainer, StyledLink } from './MovieDetails.styled';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
+import {
+  LinkGoBack,
+  MovieAdditionalInfo,
+  MovieInfo,
+  PosterContainer,
+  SectionContainer,
+  StyledLink,
+} from './MovieDetails.styled';
+import { Loader } from 'components/Loader/Loader';
 
 export const MovieDetails = () => {
   const [movieData, setMovieData] = useState({});
@@ -18,6 +27,7 @@ export const MovieDetails = () => {
       setMovieData(data);
     } catch (error) {
       console.log(error.message);
+      alert('Sorry, something went wrong... Please, try again later.');
     }
   }, [movieId]);
 
@@ -44,11 +54,14 @@ export const MovieDetails = () => {
   const poster = poster_path
     ? `https://image.tmdb.org/t/p/original/${poster_path}`
     : defaultImg;
-
-  if (!Object.keys(movieData).length) {
-    return <div>Loading...</div>;
+  
+  const scrollTo = () => {
+    scroll.scrollTo(200);
   }
 
+  if (!Object.keys(movieData).length) {
+    return <Loader />;
+  }
   return (
     <>
       <LinkGoBack to={BackToPrevPage.current}>Go back</LinkGoBack>
@@ -68,9 +81,13 @@ export const MovieDetails = () => {
         </MovieInfo>
       </SectionContainer>
       <MovieAdditionalInfo>Additional information</MovieAdditionalInfo>
-      <StyledLink to="cast">Cast</StyledLink>
-      <StyledLink to="reviews">Reviews</StyledLink>
-      <Suspense fallback={<div>Loading...</div>}>
+      <StyledLink onClick={scrollTo} className="smooth-scroll-button" to="cast">
+        Cast
+      </StyledLink>
+      <StyledLink onClick={scrollTo} className="smooth-scroll-button" to="reviews">
+        Reviews
+      </StyledLink>
+      <Suspense fallback={<Loader />}>
         <Outlet />
       </Suspense>
     </>
